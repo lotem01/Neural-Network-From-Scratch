@@ -9,11 +9,11 @@ Build a neural network classifier from scratch to learn the mathematics, optimiz
 ### Decisions and reasons
 
 - Use Python 3.13 in a local `.venv`, with NumPy, SciPy, and Matplotlib: these support vectorized numerical work, MATLAB data files, and the required plots. Isolation avoids altering system packages, at the cost of a separate installation.
-- Keep the original archive in Downloads and extract its three named `.mat` files to `data/`. Compare extracted bytes with the archive to verify the inputs were preserved. Keep course data out of Git; collaborators will need to extract their own copy of the supplied archive.
+- Keep the original archive in Downloads and extract its three named `.mat` files to `data/`. Compare extracted bytes with the archive to verify the inputs were preserved. At the user's request, include the three files in Git so collaborators can run the project immediately. This adds approximately 1 MB to the repository and shares the supplied course data with repository collaborators.
 - Inspect all three datasets before choosing their internal representation or normalization. This avoids silently guessing their orientation, at the cost of deferring the data loader implementation.
 - Use plain scripts and a small dependency list. This is easier to understand for a course project, though it provides less automation than a larger project framework.
 - Pin the installed direct and transitive package versions in `requirements.txt` for repeatability on Python 3.13 and Windows. This may require updating versions for other platforms or future security fixes.
-- The user requested connecting the project to their GitHub repository. Ignore the virtual environment, generated files, and course data to keep the repository focused on code and documentation.
+- The user requested connecting the project to their GitHub repository. Ignore the virtual environment and generated files, while tracking the course datasets at the user's request.
 - Keep code precise, purposeful, and easy to explain in a frontal review. Prefer simple, readable implementations and document meaningful decisions and trade-offs as the project develops.
 
 ### Environment and obstacles

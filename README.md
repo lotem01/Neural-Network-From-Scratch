@@ -11,7 +11,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-The original `.mat` files belong in `data/`. They were extracted without modification from `HW1_Data.zip`. Data files are kept out of the repository; after cloning, create `data/` and extract the three `.mat` files from the course archive into it.
+The three original `.mat` files are included in `data/`. They were extracted without modification from the supplied `HW1_Data.zip` archive.
 
 Dependencies are pinned to the versions verified on Windows with Python 3.13. Other platforms or Python versions may need different compatible versions.
 
