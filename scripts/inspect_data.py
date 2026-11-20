@@ -13,7 +13,7 @@ EXPECTED = {"Yt", "Ct", "Yv", "Cv"}
 
 
 def describe_split(name, features, targets):
-    """Identify the sample axis from a unique one-hot interpretation."""
+    """Check column-oriented data and report its class distribution."""
     print(f"  {name}:")
     if features.ndim != 2 or targets.ndim != 2:
         print("    WARNING: expected two-dimensional feature and target matrices")
@@ -21,23 +21,18 @@ def describe_split(name, features, targets):
     if not np.isfinite(features).all() or not np.isfinite(targets).all():
         print("    WARNING: non-finite values present")
         return None
-    binary = np.all((targets == 0) | (targets == 1))
-    candidates = []
-    if binary:
-        for target_axis in (0, 1):
-            if np.all(targets.sum(axis=1 - target_axis) == 1):
-                for feature_axis in (0, 1):
-                    if features.shape[feature_axis] == targets.shape[target_axis]:
-                        candidates.append((feature_axis, target_axis))
-    if len(candidates) != 1:
-        print("    WARNING: cannot uniquely infer one-hot sample axes; inspect manually")
+    if features.shape[1] != targets.shape[1]:
+        print("    WARNING: feature and label matrices have different sample counts")
         return None
-    feature_axis, target_axis = candidates[0]
-    sample_count = targets.shape[target_axis]
-    class_counts = targets.sum(axis=target_axis).astype(int)
-    dimension = features.shape[1 - feature_axis]
+    binary = np.all((targets == 0) | (targets == 1))
+    if not binary or not np.all(targets.sum(axis=0) == 1):
+        print("    WARNING: each label column must be one-hot")
+        return None
+    sample_count = targets.shape[1]
+    class_counts = targets.sum(axis=1).astype(int)
+    dimension = features.shape[0]
     print(f"    samples: {sample_count}; features: {dimension}; classes: {len(class_counts)}")
-    print(f"    sample axis: features={feature_axis}, labels={target_axis} (zero-based)")
+    print("    samples are columns in both matrices")
     print(f"    one-hot labels: yes; class counts: {class_counts.tolist()}")
     return dimension, len(class_counts)
 

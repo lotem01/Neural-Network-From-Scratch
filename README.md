@@ -22,3 +22,16 @@ Dependencies are pinned to the versions verified on Windows with Python 3.13. Ot
 ```
 
 The script reports matrix shapes and data types, checks the supplied train/validation splits and one-hot labels, and prints class counts. A warning or error makes the script exit with a nonzero status so unexpected formats do not pass unnoticed. It does not transform the data.
+
+## Softmax regression
+
+`softmax.py` implements the mean cross-entropy loss and its analytical gradient. Samples are columns. `add_bias` appends a row of ones to the features; the last row of the weight matrix then holds the class biases. Targets are one-hot columns (or probability columns that sum to one). The implementation subtracts the largest score for each sample before computing log probabilities, avoiding exponential overflow.
+
+Run the checks and create the assignment's gradient-test plot from the project directory:
+
+```powershell
+.\.venv\Scripts\python.exe -m unittest discover -s tests
+.\.venv\Scripts\python.exe -m experiments.gradient_check
+```
+
+The second command saves `results/softmax_gradient_check.png` and prints the loss changes and Taylor remainders. The results directory is generated locally and is not tracked in Git.
