@@ -34,4 +34,4 @@ Run the checks and create the assignment's gradient-test plot from the project d
 .\.venv\Scripts\python.exe -m experiments.gradient_check
 ```
 
-The second command saves `results/softmax_gradient_check.png` and prints the loss changes and Taylor remainders. The results directory is generated locally and is not tracked in Git.
+The second command saves `results/softmax_gradient_check.png` and prints, for each k with ε = 0.1·0.5^k, the zero-order error |F(W + εd) − F(W)| and the first-order error |F(W + εd) − F(W) − ε⟨d, ∇F⟩|. As in the course notes (section 2.10.1), both are plotted on a semilogarithmic scale against k. The results directory is generated locally and is not tracked in Git.
