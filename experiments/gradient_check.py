@@ -1,4 +1,4 @@
-"""Create the directional gradient test plot required by the assignment."""
+"""Create the gradient test plot required by the assignment (notes, section 2.10.1)."""
 
 from pathlib import Path
 
@@ -17,26 +17,28 @@ def main():
     direction /= np.linalg.norm(direction)
 
     loss, gradient = loss_and_gradient(weights, features, targets)
+    # Matrix inner product <d, G> = trace(d^T G) (notes, section 2.10.5).
     directional_derivative = np.sum(gradient * direction)
-    steps = 0.5 ** np.arange(1, 13)
+
+    epsilon = 0.1
+    iterations = np.arange(1, 9)
+    zero_order_errors = []
     first_order_errors = []
-    second_order_errors = []
-    for step in steps:
-        perturbed_loss, _ = loss_and_gradient(weights + step * direction, features, targets)
-        first_order_errors.append(abs(perturbed_loss - loss))
-        second_order_errors.append(abs(perturbed_loss - loss - step * directional_derivative))
+    for k in iterations:
+        epsilon_k = epsilon * 0.5**k
+        perturbed_loss, _ = loss_and_gradient(weights + epsilon_k * direction, features, targets)
+        zero_order_errors.append(abs(perturbed_loss - loss))
+        first_order_errors.append(abs(perturbed_loss - loss - epsilon_k * directional_derivative))
 
-    print("step\t\t|F(W + hD) - F(W)|\tTaylor remainder")
-    for step, first, second in zip(steps, first_order_errors, second_order_errors):
-        print(f"{step:.6e}\t{first:.6e}\t\t{second:.6e}")
+    print("k\terror order 1\t\terror order 2")
+    for k, zero, first in zip(iterations, zero_order_errors, first_order_errors):
+        print(f"{k}\t{zero:.6e}\t\t{first:.6e}")
 
-    plt.loglog(steps, first_order_errors, "o-", label="Loss change: O(h)")
-    plt.loglog(steps, second_order_errors, "o-", label="Taylor remainder: O(h²)")
-    plt.loglog(steps, first_order_errors[0] * steps / steps[0], "--", label="Reference slope 1")
-    plt.loglog(steps, second_order_errors[0] * (steps / steps[0]) ** 2, "--", label="Reference slope 2")
-    plt.xlabel("Step size h")
-    plt.ylabel("Absolute error")
-    plt.title("Softmax directional gradient test")
+    plt.semilogy(iterations, zero_order_errors, "o-", label="Zero order approx")
+    plt.semilogy(iterations, first_order_errors, "o-", label="First order approx")
+    plt.xlabel("k")
+    plt.ylabel("error")
+    plt.title("Successful Grad test in semilogarithmic plot")
     plt.legend()
     plt.grid(True, which="both", alpha=0.3)
     plt.tight_layout()

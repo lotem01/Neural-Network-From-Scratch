@@ -43,6 +43,8 @@ Two fresh inspection runs both exited successfully and produced identical output
 - Added a reproducible directional gradient test with seed 42 and a generated plot in `results/softmax_gradient_check.png`. The direction includes the bias weights. Halving the step approximately halves the loss change and quarters the first-order Taylor remainder, as expected. The plot is generated locally and ignored by Git; its script is tracked.
 - Three unit checks passed: a hand-computed loss and gradient including bias, finite results with extreme logits, and central-difference checks of every weight. A smoke check on the first 100 training samples of each supplied dataset produced the expected uniform-class loss `log(number of classes)` at zero weights.
 
+- Changed the gradient-test plot to the notes' format (section 2.10.1): ε_k = 0.1·0.5^k for k = 1..8, both errors on a semilogy plot against k. The zero-order error halves and the first-order error quarters at each step. The direction is still normalized and includes the bias row; the inner product with the gradient is trace(dᵀG) (section 2.10.5).
+
 ## Next steps
 
 Implement a reusable mini-batch SGD optimizer and verify it on a synthetic least-squares problem before applying it to the softmax classifier.
